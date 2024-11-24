@@ -45,7 +45,7 @@ const CharacterController = () => {
   const characterRotationTarget = useRef(0);
   const ROTATION_SPEED = degToRad(0.5);
 
-  const RUN_SPEED = 2;
+  const RUN_SPEED = 2.5;
   const WALK_SPEED = 1;
 
   const [, get] = useKeyboardControls();
@@ -146,7 +146,7 @@ const CharacterController = () => {
     >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1.5} />
-        <group ref={cameraPosition} position-y={2} position-z={-4} />
+        <group ref={cameraPosition} position-y={2.6} position-z={-4} />
         <group ref={character}>
           <Character scale={0.5} position-y={-0.4} animation={animation} />
         </group>

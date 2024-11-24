@@ -1,23 +1,25 @@
-import { Environment, useKeyboardControls } from "@react-three/drei";
+import { Cloud, Environment, Sky } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import CharacterController from "./CharacterController";
 import Floor from "./Floor";
+import VideoScreen from "./VideoScreen";
 
 export const Experience = () => {
   return (
     <>
-      <Environment preset="sunset" />
-      <directionalLight
-        intensity={0.65}
-        castShadow
-        position={[-15, 10, 15]}
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        shadow-bias={-0.00005}
-      />
-      <Physics debug>
+      <Environment preset="warehouse" />
+      <ambientLight intensity={0.15} />
+      <Sky />
+
+      <Physics>
         <Floor position={[0, -0.75, 0]} />
         <CharacterController />
+{/* 
+        <VideoScreen
+          src="MajorcaBeach1.mov"
+          position={[0, 0.7, 6]}
+          scale={[0.7, 0.7, 0.35]}
+        /> */}
       </Physics>
     </>
   );
