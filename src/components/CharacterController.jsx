@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Character from "./Character";
+import Character from "./modelsAsJsx/Character";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import { Vector3 } from "three";
 import { useFrame } from "@react-three/fiber";
@@ -143,10 +143,11 @@ const CharacterController = () => {
       colliders={false}
       lockRotations
       ref={rb}
+      name="character"
     >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1.5} />
-        <group ref={cameraPosition} position-y={2.6} position-z={-4} />
+        <group ref={cameraPosition} position-y={2.5} position-z={-4} />
         <group ref={character}>
           <Character scale={0.5} position-y={-0.4} animation={animation} />
         </group>

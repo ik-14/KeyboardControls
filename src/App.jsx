@@ -26,8 +26,7 @@ function App() {
   return (
     <KeyboardControls map={keyBoardControlsMap}>
       <Suspense>
-        <Canvas shadows camera={{ fov: 50 }}>
-          <color attach="background" args={["#eee9e9"]} />
+        <Canvas shadows camera={{ fov: 45 }}>
           <Experience />
         </Canvas>
       </Suspense>
