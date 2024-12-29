@@ -24,8 +24,8 @@ export default function Character({ animation, ...props }) {
   );
 
   useEffect(() => {
-    actions[animation]?.reset().fadeIn(0.35).play();
-    return () => actions[animation].fadeOut(0.5);
+    actions[animation]?.reset().fadeIn(0.2).play();
+    return () => actions[animation].fadeOut(0.9);
   }, [animation]);
 
   return (

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Character from "./modelsAsJsx/Character";
+import Character from "../modelsAsJsx/Character";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import { Vector3 } from "three";
 import { useFrame } from "@react-three/fiber";
@@ -45,8 +45,8 @@ const CharacterController = () => {
   const characterRotationTarget = useRef(0);
   const ROTATION_SPEED = degToRad(0.5);
 
-  const RUN_SPEED = 2.5;
-  const WALK_SPEED = 1;
+  const RUN_SPEED = 2.9;
+  const WALK_SPEED = 1.6;
 
   const [, get] = useKeyboardControls();
 
@@ -128,7 +128,7 @@ const CharacterController = () => {
 
     if (cameraTarget.current) {
       cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
-      cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
+      cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.9);
 
       camera.lookAt(cameraLookAt.current);
     }
@@ -146,13 +146,13 @@ const CharacterController = () => {
       name="character"
     >
       <group ref={container}>
-        <group ref={cameraTarget} position-z={1.5} />
-        <group ref={cameraPosition} position-y={2.5} position-z={-4} />
+        <group ref={cameraTarget} position-z={2} />
+        <group ref={cameraPosition} position-y={2} position-z={-5.5} />
         <group ref={character}>
-          <Character scale={0.5} position-y={-0.4} animation={animation} />
+          <Character scale={0.58} position-y={-0.45} animation={animation} />
         </group>
       </group>
-      <CapsuleCollider args={[0.25, 0.15]} />
+      <CapsuleCollider args={[0.35, 0.23]} />
     </RigidBody>
   );
 };
