@@ -1,10 +1,31 @@
-import React, { useRef, useState } from "react";
-import Character from "../modelsAsJsx/Character";
-import { CapsuleCollider, RigidBody } from "@react-three/rapier";
-import { Vector3 } from "three";
-import { useFrame } from "@react-three/fiber";
 import { useKeyboardControls } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import { CapsuleCollider, RigidBody } from "@react-three/rapier";
+import React, { useEffect, useRef, useState } from "react";
+import { Vector3 } from "three";
 import { degToRad, lerp } from "three/src/math/MathUtils.js";
+import Character from "../modelsAsJsx/Character";
+
+const useDeviceType = () => {
+  const [deviceType, setDeviceType] = useState("desktop");
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setDeviceType("mobile");
+      } else {
+        setDeviceType("desktop");
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return deviceType;
+};
 
 const normalizeAngle = (angle) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
@@ -43,14 +64,37 @@ const CharacterController = () => {
 
   const rotate = useRef(0);
   const characterRotationTarget = useRef(0);
-  const ROTATION_SPEED = degToRad(0.5);
+  const ROTATION_SPEED = degToRad(1);
 
-  const RUN_SPEED = 6.9;
-  const WALK_SPEED = 1.9;
+  const RUN_SPEED = 4;
+  const WALK_SPEED = 2;
 
   const [, get] = useKeyboardControls();
+  const isClicking = useRef(false);
 
-  useFrame(({ camera }) => {
+  const deviceType = useDeviceType();
+
+  useEffect(() => {
+    const onMouseDown = (e) => {
+      isClicking.current = true;
+    };
+    const onMouseUp = (e) => {
+      isClicking.current = false;
+    };
+    document.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("mouseup", onMouseUp);
+    // touch
+    document.addEventListener("touchstart", onMouseDown);
+    document.addEventListener("touchend", onMouseUp);
+    return () => {
+      document.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("touchstart", onMouseDown);
+      document.removeEventListener("touchend", onMouseUp);
+    };
+  }, []);
+
+  useFrame(({ camera, mouse }) => {
     if (rb.current) {
       let speed = get().run ? RUN_SPEED : WALK_SPEED;
 
@@ -61,6 +105,23 @@ const CharacterController = () => {
         y: 0,
         z: 0,
       };
+
+      if (isClicking.current) {
+        console.log("clicking", mouse.x, mouse.y);
+        if (Math.abs(mouse.x) > 0.1) {
+          movement.x = -mouse.x;
+        }
+        movement.z = mouse.y + 0.4;
+
+        console.log(
+          "hiiii",
+          Math.abs(movement.x) > 1,
+          Math.abs(movement.z) > 1
+        );
+        if (Math.abs(movement.x) > 0.5 || Math.abs(movement.z) > 0.5) {
+          speed = RUN_SPEED;
+        }
+      }
 
       if (get().jump && isOnGround.current) {
         movement.y = 2.3;
@@ -147,13 +208,17 @@ const CharacterController = () => {
       name="character"
     >
       <group ref={container}>
-        <group ref={cameraTarget} position-z={2} />
-        <group ref={cameraPosition} position-y={2} position-z={-5.5} />
+        <group ref={cameraTarget} position-z={1.5} />
+        <group
+          ref={cameraPosition}
+          position-y={2.2}
+          position-z={deviceType === "mobile" ? -10 : -5.5}
+        />
         <group ref={character}>
-          <Character scale={1} position-y={-0.45} animation={animation} />
+          <Character position-y={-0.87} animation={animation} />
         </group>
       </group>
-      <CapsuleCollider args={[0.35, 0.23]} />
+      <CapsuleCollider args={[0.6, 0.28]} />
     </RigidBody>
   );
 };

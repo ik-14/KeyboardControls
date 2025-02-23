@@ -1,7 +1,7 @@
+import { Html, KeyboardControls, useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Experience } from "./components/Experience";
 import { Suspense, useMemo } from "react";
-import { Box, Html, KeyboardControls, useProgress } from "@react-three/drei";
+import { Experience } from "./components/Experience";
 
 const Controls = {
   forward: "forward",
@@ -30,7 +30,13 @@ function App() {
   );
   return (
     <KeyboardControls map={keyBoardControlsMap}>
-      <Canvas style={{ background: "white" }} shadows camera={{ fov: 45 }}>
+      <Canvas
+        style={{
+          touchAction: "none",
+        }}
+        shadows
+        camera={{ fov: 45 }}
+      >
         <Suspense fallback={<Loader />}>
           <Experience />
         </Suspense>

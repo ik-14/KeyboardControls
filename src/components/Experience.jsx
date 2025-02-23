@@ -46,7 +46,6 @@ function Lights() {
 export const Experience = () => {
   return (
     <>
-      <OrbitControls />
       <Sky rayleigh={1} mieCoefficient={0.1} inclination={0.50125} />
       <Lights />
       <Physics>
