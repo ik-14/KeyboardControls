@@ -1,7 +1,7 @@
-import { OrbitControls, Sky } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
+import { Floor } from "./modelsAsJsx/Floor";
 import CharacterController from "./wrappers/CharacterController";
-import CitySceneWrapper from "./wrappers/CitySceneWrapper";
+import { OrbitControls } from "@react-three/drei";
 
 function Lights() {
   // const ambientCtl = useControls("Ambient Light", {
@@ -46,10 +46,9 @@ function Lights() {
 export const Experience = () => {
   return (
     <>
-      <Sky rayleigh={1} mieCoefficient={0.1} inclination={0.50125} />
-      <Lights />
+      {/* <OrbitControls /> */}
       <Physics>
-        <CitySceneWrapper />
+        <Floor />
         <CharacterController />
       </Physics>
     </>

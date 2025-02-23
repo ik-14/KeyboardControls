@@ -107,17 +107,11 @@ const CharacterController = () => {
       };
 
       if (isClicking.current) {
-        console.log("clicking", mouse.x, mouse.y);
         if (Math.abs(mouse.x) > 0.1) {
           movement.x = -mouse.x;
         }
         movement.z = mouse.y + 0.4;
 
-        console.log(
-          "hiiii",
-          Math.abs(movement.x) > 1,
-          Math.abs(movement.z) > 1
-        );
         if (Math.abs(movement.x) > 0.5 || Math.abs(movement.z) > 0.5) {
           speed = RUN_SPEED;
         }
@@ -200,7 +194,7 @@ const CharacterController = () => {
   };
   return (
     <RigidBody
-      position-z={3}
+      position-z={-2.5}
       onCollisionEnter={onCollisionEnter}
       colliders={false}
       lockRotations

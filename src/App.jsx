@@ -33,6 +33,7 @@ function App() {
       <Canvas
         style={{
           touchAction: "none",
+          backgroundColor: 'black'
         }}
         shadows
         camera={{ fov: 45 }}
