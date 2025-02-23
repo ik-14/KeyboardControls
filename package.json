@@ -12,6 +12,8 @@
     "@react-three/drei": "9.75.0",
     "@react-three/fiber": "8.13.3",
     "@react-three/rapier": "^1.5.0",
+    "@readyplayerme/react-avatar-creator": "^0.5.0",
+    "@readyplayerme/visage": "^6.6.2",
     "@types/three": "0.152.1",
     "leva": "^0.9.35",
     "react": "^18.2.0",

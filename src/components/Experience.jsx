@@ -1,24 +1,57 @@
+import { OrbitControls, Sky } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import CharacterController from "./wrappers/CharacterController";
-import VideoScreen from "./wrappers/VideoScreen";
-import { Environment, OrbitControls, Sky } from "@react-three/drei";
-import FloorWithCampsiteWrapper from "./wrappers/FloorWithCampsiteWrapper";
+import CitySceneWrapper from "./wrappers/CitySceneWrapper";
+
+function Lights() {
+  // const ambientCtl = useControls("Ambient Light", {
+  //   visible: true,
+  //   intensity: {
+  //     value: 0.25,
+  //     min: 0,
+  //     max: 1.0,
+  //     step: 0.01,
+  //   },
+  // });
+
+  // const directionalCtl = useControls("Directional Light", {
+  //   visible: true,
+  //   position: {
+  //     x: -30,
+  //     y: 20,
+  //     z: -20,
+  //   },
+  //   intensity: {
+  //     value: 0.1, // Dim light for moonlight
+  //     min: 0,
+  //     max: 1.0,
+  //     step: 0.05,
+  //   },
+  //   castShadow: true,
+  // });
+
+  return (
+    <>
+      <ambientLight visible intensity={0.25} />
+      <directionalLight
+        visible
+        position={[-30, 20, -20]}
+        intensity={0.1}
+        castShadow
+      />
+    </>
+  );
+}
 
 export const Experience = () => {
   return (
     <>
-      <Environment preset="sunset" />
-
+      <OrbitControls />
+      <Sky rayleigh={1} mieCoefficient={0.1} inclination={0.50125} />
+      <Lights />
       <Physics>
-        <FloorWithCampsiteWrapper />
+        <CitySceneWrapper />
         <CharacterController />
-
-        <VideoScreen
-          src="MajorcaBeach2.mov"
-          position={[18, 0.7, 0.6]}
-          scale={[0.7, 0.7, 0.35]}
-          rotation={[0, -Math.PI / 2, 0]}
-        />
       </Physics>
     </>
   );

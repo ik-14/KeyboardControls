@@ -45,8 +45,8 @@ const CharacterController = () => {
   const characterRotationTarget = useRef(0);
   const ROTATION_SPEED = degToRad(0.5);
 
-  const RUN_SPEED = 2.9;
-  const WALK_SPEED = 1.6;
+  const RUN_SPEED = 6.9;
+  const WALK_SPEED = 1.9;
 
   const [, get] = useKeyboardControls();
 
@@ -139,6 +139,7 @@ const CharacterController = () => {
   };
   return (
     <RigidBody
+      position-z={3}
       onCollisionEnter={onCollisionEnter}
       colliders={false}
       lockRotations
@@ -149,7 +150,7 @@ const CharacterController = () => {
         <group ref={cameraTarget} position-z={2} />
         <group ref={cameraPosition} position-y={2} position-z={-5.5} />
         <group ref={character}>
-          <Character scale={0.58} position-y={-0.45} animation={animation} />
+          <Character scale={1} position-y={-0.45} animation={animation} />
         </group>
       </group>
       <CapsuleCollider args={[0.35, 0.23]} />
