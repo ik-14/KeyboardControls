@@ -48,7 +48,7 @@ const lerpAngle = (start, end, t) => {
   return normalizeAngle(start + (end - start) * t);
 };
 
-const CharacterController = () => {
+export const CharacterController = () => {
   const [animation, setAnimation] = useState("Idle");
 
   const rb = useRef();
@@ -66,8 +66,8 @@ const CharacterController = () => {
   const characterRotationTarget = useRef(0);
   const ROTATION_SPEED = degToRad(1);
 
-  const RUN_SPEED = 4;
-  const WALK_SPEED = 2;
+  const RUN_SPEED = 4.5;
+  const WALK_SPEED = 2.5;
 
   const [, get] = useKeyboardControls();
   const isClicking = useRef(false);
@@ -206,7 +206,7 @@ const CharacterController = () => {
         <group
           ref={cameraPosition}
           position-y={2.2}
-          position-z={deviceType === "mobile" ? -10 : -5.5}
+          position-z={deviceType === "mobile" ? -9 : -5.5}
         />
         <group ref={character}>
           <Character position-y={-0.87} animation={animation} />
@@ -217,4 +217,3 @@ const CharacterController = () => {
   );
 };
 
-export default CharacterController;

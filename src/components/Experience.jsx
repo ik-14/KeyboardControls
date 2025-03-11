@@ -1,35 +1,9 @@
 import { Physics } from "@react-three/rapier";
-import { Floor } from "./modelsAsJsx/Floor";
-import CharacterController from "./wrappers/CharacterController";
+import { TerrainWrapper } from "./modelsAsJsx/TerrainWrapper";
+import { CharacterController } from "./wrappers/CharacterController";
 import { OrbitControls } from "@react-three/drei";
 
 function Lights() {
-  // const ambientCtl = useControls("Ambient Light", {
-  //   visible: true,
-  //   intensity: {
-  //     value: 0.25,
-  //     min: 0,
-  //     max: 1.0,
-  //     step: 0.01,
-  //   },
-  // });
-
-  // const directionalCtl = useControls("Directional Light", {
-  //   visible: true,
-  //   position: {
-  //     x: -30,
-  //     y: 20,
-  //     z: -20,
-  //   },
-  //   intensity: {
-  //     value: 0.1, // Dim light for moonlight
-  //     min: 0,
-  //     max: 1.0,
-  //     step: 0.05,
-  //   },
-  //   castShadow: true,
-  // });
-
   return (
     <>
       <ambientLight visible intensity={0.25} />
@@ -46,9 +20,10 @@ function Lights() {
 export const Experience = () => {
   return (
     <>
+      <Lights />
       {/* <OrbitControls /> */}
       <Physics>
-        <Floor />
+        <TerrainWrapper />
         <CharacterController />
       </Physics>
     </>
