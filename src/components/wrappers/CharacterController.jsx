@@ -28,9 +28,6 @@ export const CharacterController = () => {
   const isClicking = useRef(false);
   const deviceType = useDeviceType();
 
-  // Define the constant offset for a 45° rotation to the right.
-  // const initialOffset = degToRad(-45);
-
   useEffect(() => {
     const onMouseDown = () => (isClicking.current = true);
     const onMouseUp = () => (isClicking.current = false);
@@ -75,7 +72,6 @@ export const CharacterController = () => {
       if (movement.x !== 0 || movement.z !== 0) {
         // Calculate target angle from movement input
         characterRotationTarget.current = Math.atan2(movement.x, movement.z);
-        // Apply the initial offset to the movement direction
         velocity.x =
           Math.sin(rotate.current + characterRotationTarget.current) * speed;
         velocity.z =
@@ -128,7 +124,7 @@ export const CharacterController = () => {
       lockRotations
       ref={rb}
       name="character"
-      position={[40, -2.5, -40]}
+      position={[0, -6.2, -60]}
     >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1.5} />
