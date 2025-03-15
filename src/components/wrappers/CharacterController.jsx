@@ -5,36 +5,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Vector3 } from "three";
 import { degToRad, lerp } from "three/src/math/MathUtils.js";
 import Character from "../modelsAsJsx/Character";
-
-const useDeviceType = () => {
-  const [deviceType, setDeviceType] = useState("desktop");
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      setDeviceType(width < 768 ? "mobile" : "desktop");
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return deviceType;
-};
-
-const normalizeAngle = (angle) => {
-  while (angle > Math.PI) angle -= 2 * Math.PI;
-  while (angle < -Math.PI) angle += 2 * Math.PI;
-  return angle;
-};
-
-const lerpAngle = (start, end, t) => {
-  start = normalizeAngle(start);
-  end = normalizeAngle(end);
-  if (Math.abs(end - start) > Math.PI) {
-    if (end > start) start += 2 * Math.PI;
-    else end += 2 * Math.PI;
-  }
-  return normalizeAngle(start + (end - start) * t);
-};
+import { useDeviceType } from "../../utils/hooks/useDeviceType";
+import { lerpAngle } from "../../utils/helperFunctions/angleFunctions";
 
 export const CharacterController = () => {
   const [animation, setAnimation] = useState("Idle");
@@ -118,21 +90,21 @@ export const CharacterController = () => {
         setAnimation("Jump");
       }
 
-      // Smoothly rotate the visual character using the offset
+      // Rotate character, change last number for time it takes to lerp
       character.current.rotation.y = lerpAngle(
         character.current.rotation.y,
         characterRotationTarget.current,
-        0.1
+        0.07
       );
 
       rb.current.setLinvel(velocity, true);
     }
 
-    // Update container rotation (affects camera) with the offset
+    // Rotate camera container
     container.current.rotation.y = lerp(
       container.current.rotation.y,
       rotate.current,
-      0.1
+      0.05
     );
 
     cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
@@ -166,7 +138,7 @@ export const CharacterController = () => {
           position-z={deviceType === "mobile" ? -9 : -5.5}
         />
         <group ref={character}>
-          <Character position-y={-0.87}  animation={animation} />
+          <Character position-y={-0.87} animation={animation} />
         </group>
       </group>
       <CapsuleCollider args={[0.6, 0.28]} />
