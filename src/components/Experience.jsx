@@ -22,7 +22,7 @@ export const Experience = () => {
     <>
       <Lights />
       {/* <OrbitControls /> */}
-      <Physics debug>
+      <Physics>
         <TerrainWrapper />
         <CharacterController />
       </Physics>
