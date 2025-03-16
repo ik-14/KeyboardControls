@@ -9,7 +9,7 @@ export function Terrain(props) {
         castShadow
         receiveShadow
         geometry={nodes.Plane.geometry}
-        scale={[50, 1, 50]}
+        scale={[80, 1, 80]}
       >
         <meshStandardMaterial color="#3b6020" />
       </mesh>

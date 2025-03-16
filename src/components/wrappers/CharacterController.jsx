@@ -22,7 +22,7 @@ export const CharacterController = () => {
   const rotate = useRef(0);
   const characterRotationTarget = useRef(0);
   const ROTATION_SPEED = degToRad(1);
-  const RUN_SPEED = 5.2;
+  const RUN_SPEED = 6.2;
   const WALK_SPEED = 3;
   const [, get] = useKeyboardControls();
   const isClicking = useRef(false);
