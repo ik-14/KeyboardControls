@@ -1,6 +1,8 @@
 import { useGLTF } from "@react-three/drei";
 import React from "react";
 
+// look into creating this in code, so its easier for u to set position of grassblades
+
 export function Terrain(props) {
   const { nodes, materials } = useGLTF("models/terrain.glb");
   return (

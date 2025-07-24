@@ -1,7 +1,6 @@
 import { Physics } from "@react-three/rapier";
 import { TerrainWrapper } from "./wrappers/TerrainWrapper";
 import { CharacterController } from "./wrappers/CharacterController";
-import { OrbitControls } from "@react-three/drei";
 
 function Lights() {
   return (

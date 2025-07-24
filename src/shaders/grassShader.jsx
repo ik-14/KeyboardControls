@@ -5,8 +5,8 @@ export const GrassMaterial = shaderMaterial(
   {
     uTime: 0,
     uPlayerPos: new Vector3(0, 0, 0),
-    uPushRadius: 2.5, // Grass within 3 units will be affected.
-    uPushStrength: 0.4, // How strongly the grass moves away.
+    uPushRadius: 2,
+    uPushStrength: 0.5,
   },
   /* Vertex Shader */
   /* glsl */ `
@@ -22,18 +22,18 @@ export const GrassMaterial = shaderMaterial(
     attribute float colorVariation;
     
     varying float vColorVariation;
-    varying float vInfluence; // New: pass influence to fragment shader.
+    varying float vInfluence;
     
     void main() {
       vColorVariation = colorVariation;
       
       vec3 pos = position;
       
-      // Wind effect: basic sine-based sway.
-      pos.x += sin(uTime + offset.x * 20.0) * 0.05;
-      pos.y += sin(uTime + offset.y * 20.0) * 0.02;
+      pos *= scale;
       
-      // Rotate each blade around Y.
+      pos.x += sin(uTime * 0.5 + offset.x * 20.0) * 0.05 * scale;
+      pos.y += sin(uTime * 0.5 + offset.y * 20.0) * 0.02 * scale;
+      
       float c = cos(rotation);
       float s = sin(rotation);
       mat3 rotMatrix = mat3(
@@ -43,19 +43,14 @@ export const GrassMaterial = shaderMaterial(
       );
       pos = rotMatrix * pos;
       
-      // --- Player Interaction Effect ---
-      // Calculate the distance in the xz-plane between this grass instance's base and the player.
       float dist = length(offset.xz - uPlayerPos.xz);
       float influence = smoothstep(uPushRadius, 0.0, dist);
-      vInfluence = influence; // Pass influence for debugging.
+      vInfluence = influence;
       
-      // Calculate push direction away from the player.
       vec2 pushDir = normalize(offset.xz - uPlayerPos.xz);
       pos.x += pushDir.x * influence * uPushStrength;
       pos.z += pushDir.y * influence * uPushStrength;
       
-      // Apply per-instance scale and then translate by the offset.
-      pos *= scale;
       pos += offset;
       
       gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
@@ -65,21 +60,22 @@ export const GrassMaterial = shaderMaterial(
   /* glsl */ `
 precision mediump float;
 varying float vColorVariation;
-varying float vInfluence;  // Influence from player proximity (0 = no influence, 1 = full influence)
+varying float vInfluence;
 
 void main() {
-  // Base green color.
-  vec3 baseColor = vec3(0.1, 0.4, 0.2);
+  // Define a dark base green and a lighter base green
+  // These are carefully chosen to match the range of greens in your screenshot.
+  vec3 darkGrassColor = vec3(0.116, 0.235, 0.117); // Approx RGB(40, 60, 30) from screenshot
+  vec3 lightGrassColor = vec3(0.39, 0.58, 0.235);  // Approx RGB(100, 150, 60) from screenshot
+
+  // Mix between the dark and light grass colors based on vColorVariation.
+  // vColorVariation now directly controls the blend from dark to light.
+  vec3 finalColor = mix(darkGrassColor, lightGrassColor, vColorVariation);
   
-  // Adjusted brightness calculation for darker grass.
-  // Old: 0.7 + vColorVariation * 0.6; New: 0.4 + vColorVariation * 0.4;
-  float brightness = 0.4 + vColorVariation * 0.4;
-  vec3 finalColor = baseColor * brightness;
+  // Define a highlight color for player interaction - can be a brighter, distinct green
+  vec3 highlightColor = vec3(0.5, 0.8, 0.3); // A brighter, slightly yellow-green for the pushed state
   
-  // Define a highlight color (lighter green).
-  vec3 highlightColor = vec3(0.3, 0.8, 0.4);
-  
-  // Mix the base color with the highlight based on the influence.
+  // Mix the current grass color with the highlight color based on player influence.
   finalColor = mix(finalColor, highlightColor, vInfluence);
   
   gl_FragColor = vec4(finalColor, 1.0);

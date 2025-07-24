@@ -7,7 +7,7 @@ export const TerrainWrapper = () => {
   return (
     <group position={[0, -8, 0]} rotation={[0, degToRad(45), 0]}>
       <RigidBody colliders="trimesh" type="fixed">
-        <InstancedGrass count={100000} area={50} position={[50,-0.75,0]} />
+        <InstancedGrass count={35000} area={50} position={[50,-0.75,0]} />
         <Terrain />
       </RigidBody>
     </group>

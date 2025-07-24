@@ -2,23 +2,26 @@ import React, { useMemo, useRef } from "react";
 import { useFrame, extend, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { GrassMaterial } from "../../shaders/grassShader";
+import { GrassMaterial } from "../../shaders/grassShader"; // Adjust path if needed
 
 extend({ GrassMaterial });
 
-export function InstancedGrass({ count = 2000000, area = 50, position }) {
+export function InstancedGrass({
+  count = 100000,
+  area = 50,
+  position = [0, 0, 0], // Default position
+  minScale = 15.0, // Updated default: from Math.random() * 12.0 + 15.0 => min 15.0
+  maxScale = 27.0, // Updated default: from Math.random() * 12.0 + 15.0 => max 27.0 (15.0 + 12.0)
+  minColorVar = 0, // Updated default: from Math.random() * 0.5 + 0.4 => min 0.4
+  maxColorVar = 0.4, // Updated default: from Math.random() * 0.5 + 0.4 => max 0.9 (0.4 + 0.5)
+}) {
   const materialRef = useRef();
   const meshRef = useRef();
   const { scene } = useThree();
 
-  // Load the grass blade model.
-  const { nodes } = useGLTF("models/grassBlade.glb");
-  const bladeGeometry = useMemo(
-    () => nodes.brush_Spikes_g0_b0.geometry.clone(),
-    [nodes]
-  );
+  const { nodes } = useGLTF("models/Grass.glb");
+  const bladeGeometry = useMemo(() => nodes.Grass_2.geometry.clone(), [nodes]);
 
-  // Generate per-instance attributes.
   const offsets = useMemo(() => {
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -32,10 +35,10 @@ export function InstancedGrass({ count = 2000000, area = 50, position }) {
   const scales = useMemo(() => {
     const arr = new Float32Array(count);
     for (let i = 0; i < count; i++) {
-      arr[i] = Math.random() * 1.0 + 0.3;
+      arr[i] = Math.random() * (maxScale - minScale) + minScale;
     }
     return arr;
-  }, [count]);
+  }, [count, minScale, maxScale]);
 
   const rotations = useMemo(() => {
     const arr = new Float32Array(count);
@@ -48,10 +51,10 @@ export function InstancedGrass({ count = 2000000, area = 50, position }) {
   const colorVariations = useMemo(() => {
     const arr = new Float32Array(count);
     for (let i = 0; i < count; i++) {
-      arr[i] = Math.random();
+      arr[i] = Math.random() * (maxColorVar - minColorVar) + minColorVar;
     }
     return arr;
-  }, [count]);
+  }, [count, minColorVar, maxColorVar]);
 
   const instancedGeometry = useMemo(() => {
     const geo = bladeGeometry.clone();
@@ -73,13 +76,10 @@ export function InstancedGrass({ count = 2000000, area = 50, position }) {
       materialRef.current.uTime = clock.getElapsedTime();
       const player = scene.getObjectByName("character");
       if (player) {
-        // Convert the player's world position to the local space of the grass mesh.
         const localPlayerPos = meshRef.current.worldToLocal(
           player.position.clone()
         );
         materialRef.current.uPlayerPos.copy(localPlayerPos);
-        // Optional: log to verify
-        // console.log("Local player pos:", localPlayerPos);
       }
     }
   });
