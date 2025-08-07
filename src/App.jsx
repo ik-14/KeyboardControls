@@ -1,4 +1,9 @@
-import { Html, KeyboardControls, useProgress } from "@react-three/drei";
+import {
+  Environment,
+  Html,
+  KeyboardControls,
+  useProgress,
+} from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useMemo } from "react";
 import { Experience } from "./components/Experience";
@@ -33,12 +38,13 @@ function App() {
       <Canvas
         style={{
           touchAction: "none",
-          backgroundColor: 'black'
+          // backgroundColor: 'black'
         }}
         shadows
         camera={{ fov: 45 }}
       >
         <Suspense fallback={<Loader />}>
+          <Environment preset="sunset" />
           <Experience />
         </Suspense>
       </Canvas>
