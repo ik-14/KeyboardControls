@@ -6,7 +6,7 @@ export const GrassMaterial = shaderMaterial(
     uTime: 0,
     uPlayerPos: new Vector3(0, 0, 0),
     uPushRadius: 2,
-    uPushStrength: 0.5,
+    uPushStrength: 0.8,
   },
   /* Vertex Shader */
   /* glsl */ `
@@ -31,8 +31,8 @@ export const GrassMaterial = shaderMaterial(
       
       pos *= scale;
       
-      pos.x += sin(uTime * 0.5 + offset.x * 20.0) * 0.05 * scale;
-      pos.y += sin(uTime * 0.5 + offset.y * 20.0) * 0.02 * scale;
+      pos.x += sin(uTime * 0.5 + offset.x * 20.0) * 0.275 ; // NOTE: This is the grass swaying x
+      pos.y += sin(uTime * 0.5 + offset.y * 20.0) * 0.005; // NOTE: This is the grass swaying y
       
       float c = cos(rotation);
       float s = sin(rotation);
