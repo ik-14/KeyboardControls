@@ -7,10 +7,10 @@ import { GrassMaterial } from "../../shaders/grassShader"; // Adjust path if nee
 extend({ GrassMaterial });
 
 export function InstancedGrass({
-  count = 100000,
+  count = 70000,
   area = 50,
   position = [0, 0, 0], // Default position
-  minScale = 15.0, // Updated default: from Math.random() * 12.0 + 15.0 => min 15.0
+  minScale = 13.0, // Updated default: from Math.random() * 12.0 + 15.0 => min 15.0
   maxScale = 27.0, // Updated default: from Math.random() * 12.0 + 15.0 => max 27.0 (15.0 + 12.0)
   minColorVar = 0, // Updated default: from Math.random() * 0.5 + 0.4 => min 0.4
   maxColorVar = 0.4, // Updated default: from Math.random() * 0.5 + 0.4 => max 0.9 (0.4 + 0.5)
