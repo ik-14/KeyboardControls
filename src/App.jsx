@@ -38,13 +38,11 @@ function App() {
       <Canvas
         style={{
           touchAction: "none",
-          // backgroundColor: 'black'
         }}
         shadows
         camera={{ fov: 45 }}
       >
         <Suspense fallback={<Loader />}>
-          <Environment preset="sunset" />
           <Experience />
         </Suspense>
       </Canvas>

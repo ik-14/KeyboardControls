@@ -1,25 +1,12 @@
 import { Physics } from "@react-three/rapier";
 import { TerrainWrapper } from "./wrappers/TerrainWrapper";
 import { CharacterController } from "./wrappers/CharacterController";
-
-function Lights() {
-  return (
-    <>
-      <ambientLight visible intensity={0.25} />
-      <directionalLight
-        visible
-        position={[-30, 20, -20]}
-        intensity={0.1}
-        castShadow
-      />
-    </>
-  );
-}
+import { DayNightLighting } from "./DayNightLighting";
 
 export const Experience = () => {
   return (
     <>
-      <Lights />
+      <DayNightLighting />
       {/* <OrbitControls /> */}
       <Physics>
         <TerrainWrapper />
