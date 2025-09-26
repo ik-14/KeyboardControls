@@ -5,8 +5,8 @@ export const GrassMaterial = shaderMaterial(
   {
     uTime: 0,
     uPlayerPos: new Vector3(0, 0, 0),
-    uPushRadius: 2,
-    uPushStrength: 0.8,
+    uPushRadius: 1.5,
+    uPushStrength: 1,
   },
   /* Vertex Shader */
   /* glsl */ `
@@ -64,16 +64,15 @@ varying float vInfluence;
 
 void main() {
   // Define a dark base green and a lighter base green
-  // These are carefully chosen to match the range of greens in your screenshot.
-  vec3 darkGrassColor = vec3(0.116, 0.235, 0.117); // Approx RGB(40, 60, 30) from screenshot
-  vec3 lightGrassColor = vec3(0.39, 0.58, 0.235);  // Approx RGB(100, 150, 60) from screenshot
+  vec3 darkGrassColor = vec3(0.08, 0.15, 0.06);   // Darker, more realistic grass
+  vec3 lightGrassColor = vec3(0.25, 0.35, 0.15);  // Muted lighter grass
 
   // Mix between the dark and light grass colors based on vColorVariation.
   // vColorVariation now directly controls the blend from dark to light.
   vec3 finalColor = mix(darkGrassColor, lightGrassColor, vColorVariation);
   
-  // Define a highlight color for player interaction - can be a brighter, distinct green
-  vec3 highlightColor = vec3(0.5, 0.8, 0.3); // A brighter, slightly yellow-green for the pushed state
+  // Define a highlight color for player interaction
+  vec3 highlightColor = vec3(0, 0.1, 0); // Muted highlight color
   
   // Mix the current grass color with the highlight color based on player influence.
   finalColor = mix(finalColor, highlightColor, vInfluence);

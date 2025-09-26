@@ -1,22 +1,15 @@
-import { useGLTF } from "@react-three/drei";
-import React from "react";
-
-// look into creating this in code, so its easier for u to set position of grassblades
-
 export function Terrain(props) {
-  const { nodes, materials } = useGLTF("models/terrain.glb");
   return (
     <group {...props} dispose={null}>
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Plane.geometry}
-        scale={[80, 1, 80]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        scale={[70, 70, 1]}
       >
-        <meshStandardMaterial color="#3b6020" />
+        <planeGeometry args={[1, 1]} />
+        <meshStandardMaterial color="#2d4a1a" roughness={0.8} />
       </mesh>
     </group>
   );
 }
-
-useGLTF.preload("models/terrain.glb");

@@ -8,7 +8,7 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export function Frame(props) {
-  const { nodes, materials } = useGLTF('models/frame-transformed.glb')
+  const { nodes, materials } = useGLTF('models/frame.glb')
   return (
     <group {...props} dispose={null}>
       <mesh geometry={nodes.shadeBeige001.geometry} material={nodes.shadeBeige001.material} position={[0.101, -0.566, 0.648]} rotation={[-1.61, 0.053, 1.616]} scale={1.446} />
@@ -16,4 +16,4 @@ export function Frame(props) {
   )
 }
 
-useGLTF.preload('/models/frame-transformed.glb')
+useGLTF.preload('/models/frame.glb')

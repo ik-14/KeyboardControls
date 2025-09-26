@@ -2,18 +2,20 @@ import React, { useMemo, useRef } from "react";
 import { useFrame, extend, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { GrassMaterial } from "../../shaders/grassShader"; // Adjust path if needed
+import { GrassMaterial } from "../../shaders/grassShader";
 
 extend({ GrassMaterial });
+
+
 
 export function InstancedGrass({
   count = 70000,
   area = 50,
   position = [0, 0, 0], // Default position
-  minScale = 13.0, // Updated default: from Math.random() * 12.0 + 15.0 => min 15.0
-  maxScale = 27.0, // Updated default: from Math.random() * 12.0 + 15.0 => max 27.0 (15.0 + 12.0)
+  minScale = 23.0, // Updated default: from Math.random() * 12.0 + 15.0 => min 15.0
+  maxScale = 25.0, // Updated default: from Math.random() * 12.0 + 15.0 => max 27.0 (15.0 + 12.0)
   minColorVar = 0, // Updated default: from Math.random() * 0.5 + 0.4 => min 0.4
-  maxColorVar = 0.4, // Updated default: from Math.random() * 0.5 + 0.4 => max 0.9 (0.4 + 0.5)
+  maxColorVar = 0.6, // Updated default: from Math.random() * 0.5 + 0.4 => max 0.9 (0.4 + 0.5)
 }) {
   const materialRef = useRef();
   const meshRef = useRef();
@@ -23,13 +25,24 @@ export function InstancedGrass({
   const bladeGeometry = useMemo(() => nodes.Grass_2.geometry.clone(), [nodes]);
 
   const offsets = useMemo(() => {
-    const arr = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      arr[i * 3 + 0] = (Math.random() - 0.5) * area;
-      arr[i * 3 + 1] = 0;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * area;
+    const positions = [];
+    const houseRadius = 10; // Exclusion radius around house
+    
+    let attempts = 0;
+    while (positions.length < count * 3 && attempts < count * 3) {
+      const x = (Math.random() - 0.5) * area;
+      const z = (Math.random() - 0.5) * area;
+      
+      // Check if position is outside house exclusion zone
+      const distanceFromHouse = Math.sqrt(x * x + z * z);
+      if (distanceFromHouse > houseRadius) {
+        const y = 0; // Flat terrain at y=0
+        positions.push(x, y, z);
+      }
+      attempts++;
     }
-    return arr;
+    
+    return new Float32Array(positions);
   }, [count, area]);
 
   const scales = useMemo(() => {

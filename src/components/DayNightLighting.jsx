@@ -8,7 +8,6 @@ export const DayNightLighting = () => {
   const { scene } = useThree();
 
   useEffect(() => {
-    console.log(cycle);
     if (cycle.skyColor) {
       scene.background = new Color(cycle.skyColor);
     }

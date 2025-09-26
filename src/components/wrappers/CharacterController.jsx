@@ -126,7 +126,7 @@ export const CharacterController = () => {
       lockRotations
       ref={rb}
       name="character"
-      position={[0, -6.2, -60]}
+      position={[5, -6.2, 5]}
     >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1.5} />
