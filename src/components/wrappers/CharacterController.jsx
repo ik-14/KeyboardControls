@@ -57,7 +57,7 @@ export const CharacterController = () => {
         }
       }
       if (get().jump && isOnGround.current) {
-        movement.y = 2.3;
+        movement.y = 2.7;
         isOnGround.current = false;
       }
       if (get().forward) movement.z = 1;

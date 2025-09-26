@@ -22,6 +22,46 @@ export const TerrainWrapper = () => {
         {/* <Frame position={[0, 1, 6]} rotation={[0, Math.PI, 0]} />      Front side */}
         {/* <Frame position={[0, 1, -6]} rotation={[0, 0, 0]} />           Back side */}
         <Terrain />
+        
+        {/* Left Island */}
+        <group position={[-60, 0, 0]}>
+          <mesh
+            castShadow
+            receiveShadow
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={[30, 30, 1]}
+          >
+            <planeGeometry args={[1, 1]} />
+            <meshStandardMaterial color="#2d4a1a" roughness={0.8} />
+          </mesh>
+          <InstancedGrass count={8000} area={30} position={[0, -0.01, 0]} />
+        </group>
+        
+        {/* Right Island */}
+        <group position={[70, 0, 0]}>
+          <mesh
+            castShadow
+            receiveShadow
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={[30, 30, 1]}
+          >
+            <planeGeometry args={[1, 1]} />
+            <meshStandardMaterial color="#2d4a1a" roughness={0.8} />
+          </mesh>
+          <InstancedGrass count={8000} area={30} position={[0, -0.01, 0]} />
+        </group>
+        
+        {/* Bridge to Left Island */}
+        <mesh position={[-25, 0.2, 0]} castShadow receiveShadow>
+          <boxGeometry args={[15, 0.25, 3]} />
+          <meshStandardMaterial color="#8B7355" roughness={0.9} />
+        </mesh>
+        
+        {/* Bridge to Right Island */}
+        <mesh position={[45, 0.2, 0]} castShadow receiveShadow>
+          <boxGeometry args={[20, 0.3, 3]} />
+          <meshStandardMaterial color="#8B7355" roughness={0.9} />
+        </mesh>
       </RigidBody>
     </group>
   );
