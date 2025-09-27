@@ -30,8 +30,14 @@ export const DayNightLighting = () => {
         intensity={lightIntensity}
         color={lightColor}
         castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
+        shadow-mapSize-width={4096}
+        shadow-mapSize-height={4096}
+        shadow-camera-far={100}
+        shadow-camera-left={-50}
+        shadow-camera-right={50}
+        shadow-camera-top={50}
+        shadow-camera-bottom={-50}
+        shadow-bias={-0.0001}
       />
 
       {/* Dynamic fog */}
@@ -39,7 +45,7 @@ export const DayNightLighting = () => {
         attach="fog"
         args={[
           cycle.skyColor,
-          20,
+          15,
           80
         ]}
       />
