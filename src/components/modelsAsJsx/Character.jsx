@@ -4,7 +4,7 @@ Command: npx gltfjsx@6.2.3 public/models/character.glb -o src/components/Charact
 */
 
 import { useAnimations, useFBX, useGLTF } from "@react-three/drei";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 export default function Character({ animation, ...props }) {
   const { nodes, materials } = useGLTF("/models/ismail.glb");
   const { animations: idleAnimation } = useFBX("/animations/Idle.fbx");
@@ -17,11 +17,26 @@ export default function Character({ animation, ...props }) {
   walkAnimation[0].name = "Walk";
   runAnimation[0].name = "Run";
 
-  const group = useRef();
-  const { actions } = useAnimations(
-    [idleAnimation[0], jumpAnimation[0], walkAnimation[0], runAnimation[0]],
-    group
+  // The FBX exports contain an Armature root absent from this GLB.
+  // Keep the skeleton tracks and remove only that incompatible root track.
+  const clips = useMemo(
+    () =>
+      [
+        idleAnimation[0],
+        jumpAnimation[0],
+        walkAnimation[0],
+        runAnimation[0],
+      ].map((clip) => {
+        const copy = clip.clone();
+        copy.tracks = copy.tracks.filter(
+          (track) => !track.name.startsWith("Armature."),
+        );
+        return copy;
+      }),
+    [idleAnimation, jumpAnimation, walkAnimation, runAnimation],
   );
+  const group = useRef();
+  const { actions } = useAnimations(clips, group);
 
   useEffect(() => {
     actions[animation]?.reset().fadeIn(0.3).play();
@@ -32,6 +47,8 @@ export default function Character({ animation, ...props }) {
     <group {...props} ref={group} dispose={null}>
       <primitive object={nodes.Hips} />
       <skinnedMesh
+        castShadow
+        receiveShadow
         name="EyeLeft"
         geometry={nodes.EyeLeft.geometry}
         material={materials.Wolf3D_Eye}
@@ -40,6 +57,8 @@ export default function Character({ animation, ...props }) {
         morphTargetInfluences={nodes.EyeLeft.morphTargetInfluences}
       />
       <skinnedMesh
+        castShadow
+        receiveShadow
         name="EyeRight"
         geometry={nodes.EyeRight.geometry}
         material={materials.Wolf3D_Eye}
@@ -48,6 +67,8 @@ export default function Character({ animation, ...props }) {
         morphTargetInfluences={nodes.EyeRight.morphTargetInfluences}
       />
       <skinnedMesh
+        castShadow
+        receiveShadow
         name="Wolf3D_Head"
         geometry={nodes.Wolf3D_Head.geometry}
         material={materials.Wolf3D_Skin}
@@ -56,6 +77,8 @@ export default function Character({ animation, ...props }) {
         morphTargetInfluences={nodes.Wolf3D_Head.morphTargetInfluences}
       />
       <skinnedMesh
+        castShadow
+        receiveShadow
         name="Wolf3D_Teeth"
         geometry={nodes.Wolf3D_Teeth.geometry}
         material={materials.Wolf3D_Teeth}
@@ -64,26 +87,36 @@ export default function Character({ animation, ...props }) {
         morphTargetInfluences={nodes.Wolf3D_Teeth.morphTargetInfluences}
       />
       <skinnedMesh
+        castShadow
+        receiveShadow
         geometry={nodes.Wolf3D_Hair.geometry}
         material={materials.Wolf3D_Hair}
         skeleton={nodes.Wolf3D_Hair.skeleton}
       />
       <skinnedMesh
+        castShadow
+        receiveShadow
         geometry={nodes.Wolf3D_Outfit_Top.geometry}
         material={materials.Wolf3D_Outfit_Top}
         skeleton={nodes.Wolf3D_Outfit_Top.skeleton}
       />
       <skinnedMesh
+        castShadow
+        receiveShadow
         geometry={nodes.Wolf3D_Outfit_Bottom.geometry}
         material={materials.Wolf3D_Outfit_Bottom}
         skeleton={nodes.Wolf3D_Outfit_Bottom.skeleton}
       />
       <skinnedMesh
+        castShadow
+        receiveShadow
         geometry={nodes.Wolf3D_Outfit_Footwear.geometry}
         material={materials.Wolf3D_Outfit_Footwear}
         skeleton={nodes.Wolf3D_Outfit_Footwear.skeleton}
       />
       <skinnedMesh
+        castShadow
+        receiveShadow
         geometry={nodes.Wolf3D_Body.geometry}
         material={materials.Wolf3D_Body}
         skeleton={nodes.Wolf3D_Body.skeleton}
